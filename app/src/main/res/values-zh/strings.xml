@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ZJU Connect</string>
-    <string name="action_settings">设置</string>
-    <string name="setting_fragment_label">设置</string>
     <string name="previous">上一段</string>
     <string name="started">已启动！</string>
     <string name="stopped">已停止！</string>
@@ -14,4 +12,7 @@
     <string name="password">密码</string>
     <string name="input_username">输入用户名</string>
     <string name="input_password">输入密码</string>
+    <string name="action_about">关于</string>
+    <string name="about_fragment_label">关于</string>
+    <string name="icon">图标</string>
 </resources>

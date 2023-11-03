@@ -12,17 +12,17 @@
         tools:layout="@layout/fragment_first">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SettingFragment"
-            app:destination="@id/SettingFragment" />
+            android:id="@+id/action_FirstFragment_to_AboutFragment"
+            app:destination="@id/AboutFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SettingFragment"
-        android:name="cx.myth.zjuconnect.SettingFragment"
-        android:label="@string/setting_fragment_label"
-        tools:layout="@layout/fragment_setting">
+        android:id="@+id/AboutFragment"
+        android:name="cx.myth.zjuconnect.AboutFragment"
+        android:label="@string/about_fragment_label"
+        tools:layout="@layout/fragment_about">
 
         <action
-            android:id="@+id/action_SettingFragment_to_FirstFragment"
+            android:id="@+id/action_AboutFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
 </navigation>

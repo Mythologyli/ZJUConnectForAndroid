@@ -38,15 +38,15 @@ public class MainActivity extends AppCompatActivity {
             if (Objects.equals(intent.getAction(), "cx.myth.zjuconnect.LOGIN_FAILED")) {
                 isRunning = false;
                 binding.fab.setImageResource(android.R.drawable.ic_media_play);
-                Snackbar.make(binding.fab.getRootView(), R.string.login_failed, Snackbar.LENGTH_SHORT).setAnchorView(R.id.fab).show();
-                findViewById(R.id.fab).setEnabled(true);
+                Snackbar.make(binding.getRoot(), R.string.login_failed, Snackbar.LENGTH_SHORT).setAnchorView(binding.fab).show();
+                binding.fab.setEnabled(true);
             } else if (Objects.equals(intent.getAction(), "cx.myth.zjuconnect.STACK_STOPPED")) {
                 stopVpnService();
             } else if (Objects.equals(intent.getAction(), "cx.myth.zjuconnect.LOGIN_SUCCEEDED")) {
                 isRunning = true;
                 binding.fab.setImageResource(android.R.drawable.ic_media_pause);
-                Snackbar.make(binding.fab.getRootView(), R.string.started, Snackbar.LENGTH_SHORT).setAnchorView(R.id.fab).show();
-                findViewById(R.id.fab).setEnabled(true);
+                Snackbar.make(binding.getRoot(), R.string.started, Snackbar.LENGTH_SHORT).setAnchorView(binding.fab).show();
+                binding.fab.setEnabled(true);
             }
         }
     };
@@ -63,6 +63,18 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            MenuItem item = binding.toolbar.getMenu().findItem(R.id.action_about);
+            if (item != null) {
+                item.setVisible(destination.getId() == R.id.FirstFragment);
+            }
+
+            if (destination.getId() == R.id.FirstFragment) {
+                binding.fab.show();
+            } else {
+                binding.fab.hide();
+            }
+        });
 
         SharedPreferences sharedPreferences = getSharedPreferences("MySettings", Context.MODE_PRIVATE);
         String value = sharedPreferences.getString("username", "");
@@ -79,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
         ActivityResultLauncher<Intent> getPermission = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() != RESULT_OK) {
-                Snackbar.make(binding.fab.getRootView(), R.string.ask_permission, Snackbar.LENGTH_SHORT).setAnchorView(R.id.fab).show();
+                Snackbar.make(binding.getRoot(), R.string.ask_permission, Snackbar.LENGTH_SHORT).setAnchorView(binding.fab).show();
                 return;
             }
 
@@ -121,15 +133,21 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("password", ((EditText) findViewById(R.id.passwordEditText)).getText().toString());
                 startService(intent);
 
-                findViewById(R.id.fab).setEnabled(false);
+                binding.fab.setEnabled(false);
             });
         }).start();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MySettings", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("username", ((EditText) findViewById(R.id.usernameEditText)).getText().toString());
+        editor.putString("password", ((EditText) findViewById(R.id.passwordEditText)).getText().toString());
+        editor.apply();
     }
 
     private void stopVpnService() {
         isRunning = false;
         binding.fab.setImageResource(android.R.drawable.ic_media_play);
-        Snackbar.make(binding.fab.getRootView(), R.string.stopped, Snackbar.LENGTH_SHORT).setAnchorView(R.id.fab).show();
+        Snackbar.make(binding.getRoot(), R.string.stopped, Snackbar.LENGTH_SHORT).setAnchorView(binding.fab).show();
     }
 
     @Override
@@ -146,11 +164,11 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            // Go to SettingFragment
-            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-            navController.navigate(R.id.action_FirstFragment_to_SettingFragment);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        if (Objects.requireNonNull(navController.getCurrentDestination()).getId() == R.id.FirstFragment) {
+            if (id == R.id.action_about) {
+                navController.navigate(R.id.action_FirstFragment_to_AboutFragment);
+            }
 
             return true;
         }
@@ -162,16 +180,5 @@ public class MainActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
-    }
-
-    @Override
-    protected void onStop() {
-        SharedPreferences sharedPreferences = getSharedPreferences("MySettings", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("username", ((EditText) findViewById(R.id.usernameEditText)).getText().toString());
-        editor.putString("password", ((EditText) findViewById(R.id.passwordEditText)).getText().toString());
-        editor.apply();
-
-        super.onStop();
     }
 }
