@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">ZJU Connect</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="setting_fragment_label">Settings</string>
+    <string name="previous">Previous</string>
+
+    <string name="started">Start!</string>
+    <string name="stopped">Stop!</string>
+    <string name="ask_permission">Please grant permission!</string>
+    <string name="login_failed">Login failed!</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="input_username">Input username</string>
+    <string name="input_password">Input password</string>
+</resources>

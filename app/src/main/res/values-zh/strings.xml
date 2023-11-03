@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ZJU Connect</string>
+    <string name="action_settings">设置</string>
+    <string name="setting_fragment_label">设置</string>
+    <string name="previous">上一段</string>
+    <string name="started">已启动！</string>
+    <string name="stopped">已停止！</string>
+    <string name="ask_permission">请授权！</string>
+    <string name="login_failed">登录失败！</string>
+    <string name="start">启动</string>
+    <string name="stop">停止</string>
+    <string name="username">用户名</string>
+    <string name="password">密码</string>
+    <string name="input_username">输入用户名</string>
+    <string name="input_password">输入密码</string>
+</resources>
