@@ -81,16 +81,20 @@ jobs:
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
 
+      - name: Rename APK
+        run:
+          cp ${{steps.sign_app.outputs.signedReleaseFile}} ./ZJUConnectForAndroid.apk
+
       - name: Upload artifact
         if: github.event_name != 'release'
         uses: actions/upload-artifact@v3
         with:
           name: ZJUConnectForAndroid
-          path: ${{steps.sign_app.outputs.signedReleaseFile}}
+          path: ZJUConnectForAndroid.apk
 
       - name: Upload release binary
         if: github.event_name == 'release'
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
-          gh release upload ${{ github.event.release.tag_name }} ${{steps.sign_app.outputs.signedReleaseFile}}
+          gh release upload ${{ github.event.release.tag_name }} ZJUConnectForAndroid.apk
