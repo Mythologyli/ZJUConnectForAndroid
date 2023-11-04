@@ -1,10 +1,17 @@
 package cx.myth.zjuconnect;
 
+import static android.Manifest.permission.POST_NOTIFICATIONS;
+
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +20,9 @@ import android.widget.EditText;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -31,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
+    private NotificationManager notificationManager;
+    private Notification notification;
     private boolean isRunning = false;
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -40,13 +52,22 @@ public class MainActivity extends AppCompatActivity {
                 binding.fab.setImageResource(android.R.drawable.ic_media_play);
                 Snackbar.make(binding.getRoot(), R.string.login_failed, Snackbar.LENGTH_SHORT).setAnchorView(binding.fab).show();
                 binding.fab.setEnabled(true);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    notificationManager.cancel(1);
+                }
             } else if (Objects.equals(intent.getAction(), "cx.myth.zjuconnect.STACK_STOPPED")) {
                 stopVpnService();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    notificationManager.cancel(1);
+                }
             } else if (Objects.equals(intent.getAction(), "cx.myth.zjuconnect.LOGIN_SUCCEEDED")) {
                 isRunning = true;
                 binding.fab.setImageResource(android.R.drawable.ic_media_pause);
                 Snackbar.make(binding.getRoot(), R.string.started, Snackbar.LENGTH_SHORT).setAnchorView(binding.fab).show();
                 binding.fab.setEnabled(true);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    notificationManager.notify(1, notification);
+                }
             }
         }
     };
@@ -89,6 +110,27 @@ public class MainActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter("cx.myth.zjuconnect.STACK_STOPPED"));
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter("cx.myth.zjuconnect.LOGIN_SUCCEEDED"));
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("zjuconnect", "Notification", NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "zjuconnect")
+                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+                    .setContentTitle("ZJU Connect")
+                    .setContentText(getResources().getString(R.string.connected));
+
+            builder.setOngoing(true);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (ContextCompat.checkSelfPermission(this, POST_NOTIFICATIONS) == PackageManager.PERMISSION_DENIED) {
+                    ActivityCompat.requestPermissions(this, new String[]{POST_NOTIFICATIONS}, 1);
+                }
+            }
+
+            notification = builder.build();
+        }
+
         ActivityResultLauncher<Intent> getPermission = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() != RESULT_OK) {
                 Snackbar.make(binding.getRoot(), R.string.ask_permission, Snackbar.LENGTH_SHORT).setAnchorView(binding.fab).show();
@@ -108,6 +150,9 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent("cx.myth.zjuconnect.STOP_VPN"));
                     stopVpnService();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        notificationManager.cancel(1);
+                    }
                 }
             }
         });
