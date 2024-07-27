@@ -64,6 +64,10 @@ public class MainActivity extends AppCompatActivity {
                 isRunning = true;
                 binding.fab.setImageResource(android.R.drawable.ic_media_pause);
                 Snackbar.make(binding.getRoot(), R.string.started, Snackbar.LENGTH_SHORT).setAnchorView(binding.fab).show();
+                SharedPreferences sharedPreferences = getSharedPreferences("MySettings", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("hasConnected", true);
+                editor.apply();
                 binding.fab.setEnabled(true);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     notificationManager.notify(1, notification);
@@ -156,6 +160,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        if (sharedPreferences.getBoolean("hasConnected", false)) {
+            binding.fab.callOnClick();
+        }
+
     }
 
     private void startVpnService() {
