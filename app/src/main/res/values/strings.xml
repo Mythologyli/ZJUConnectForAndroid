@@ -17,4 +17,5 @@
     <string name="about_fragment_label">About</string>
     <string name="icon">Icon</string>
     <string name="connected">Connected</string>
+    <string name="auto_connect">Auto Connect</string>
 </resources>

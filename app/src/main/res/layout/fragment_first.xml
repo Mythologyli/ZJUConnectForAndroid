@@ -66,6 +66,12 @@
                 android:hint="@string/input_password"
                 android:inputType="textPassword"
                 android:textColorHint="@color/black" />
+
+            <CheckBox
+                android:id="@+id/autoConnectCheckBox"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="@string/auto_connect" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
