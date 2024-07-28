@@ -35,7 +35,6 @@ jobs:
         run: |
           git clone https://github.com/Mythologyli/zju-connect.git
           cd zju-connect
-          git checkout android
           go mod download
           go install golang.org/x/mobile/cmd/gomobile@latest
           go get golang.org/x/mobile/bind@latest
