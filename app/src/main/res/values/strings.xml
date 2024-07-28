@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">ZJU Connect</string>
+    <string name="default_server" translatable="false">rvpn.zju.edu.cn</string>
+    <string name="default_dns_server" translatable="false">10.10.0.21</string>
+
     <!-- Strings used for fragments for navigation -->
     <string name="previous">Previous</string>
 

@@ -37,6 +37,7 @@ public class MyVpnService extends VpnService {
 
         new Thread(() -> {
             String ip = Mobile.login(intent.getStringExtra("server"), intent.getStringExtra("username"), intent.getStringExtra("password"));
+            String dnsServer = intent.getStringExtra("dns_server");
             if (ip.equals("")) {
                 localBroadcastManager.sendBroadcast(new Intent("cx.myth.zjuconnect.LOGIN_FAILED"));
                 stopSelf();
@@ -45,7 +46,7 @@ public class MyVpnService extends VpnService {
 
             localBroadcastManager.sendBroadcast(new Intent("cx.myth.zjuconnect.LOGIN_SUCCEEDED"));
 
-            Builder builder = new Builder().addAddress(ip, 8).addRoute("10.0.0.0", 8).addDnsServer("10.10.0.21").setMtu(1400);
+            Builder builder = new Builder().addAddress(ip, 8).addRoute("10.0.0.0", 8).addDnsServer(dnsServer).setMtu(1400);
             tun = builder.establish();
 
             executors.submit(() -> {
