@@ -15,9 +15,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -173,6 +175,19 @@ public class MainActivity extends AppCompatActivity {
         if (checkBox.isChecked() && sharedPreferences.getBoolean("hasConnected", false)) {
             binding.fab.callOnClick();
         }
+
+        CheckBox advancedCheckBox = findViewById(R.id.advancedVisibleCheckBox);
+        advancedCheckBox.setChecked(sharedPreferences.getBoolean("visibleChecked", false));
+        if (advancedCheckBox.isChecked()) {
+            findViewById(R.id.advancedSettings).setVisibility(View.VISIBLE);
+        }
+        advancedCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("visibleChecked", isChecked);
+            editor.apply();
+
+            findViewById(R.id.advancedSettings).setVisibility(isChecked ? View.VISIBLE : View.INVISIBLE);
+        });
     }
 
     private void startVpnService() {

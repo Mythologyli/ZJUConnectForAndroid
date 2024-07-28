@@ -18,4 +18,10 @@
     <string name="icon">Icon</string>
     <string name="connected">Connected</string>
     <string name="auto_connect">Auto Connect</string>
+    <string name="show_advanced_settings">Show Advanced Settings</string>
+    <string name="server">Server</string>
+    <string name="dns_server">Dns Server</string>
+    <string name="input_server">Input server</string>
+    <string name="input_dns_server">Input dns server</string>
+    <string name="reset">Reset</string>
 </resources>

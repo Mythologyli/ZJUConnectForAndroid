@@ -72,6 +72,81 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:text="@string/auto_connect" />
+
+            <CheckBox
+                android:id="@+id/advancedVisibleCheckBox"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="@string/show_advanced_settings" />
+
+            <LinearLayout
+                android:id="@+id/advancedSettings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="invisible">
+
+            <TextView
+                android:id="@+id/server"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/server"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/resetServerButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/reset"/>
+
+                <EditText
+                    android:id="@+id/serverEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:autofillHints="username"
+                    android:ems="10"
+                    android:hint="@string/input_server"
+                    android:inputType="text"
+                    android:textColorHint="@color/black" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/dns_server"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/dns_server"
+                android:textSize="18sp" />
+
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/resetDnsServerButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/reset"/>
+
+                <EditText
+                    android:id="@+id/dns_serverEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:autofillHints="password"
+                    android:ems="10"
+                    android:hint="@string/input_dns_server"
+                    android:inputType="text"
+                    android:textColorHint="@color/black" />
+
+            </LinearLayout>
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
